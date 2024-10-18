@@ -13,8 +13,11 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/przyrzady-ie",
-            "index": "src/index.html",
+            "outputPath": {
+              "base": "C:\\xampp\\htdocs\\mcp3el54\\public\\apps\\przyrzady-ie",
+              "browser": ""
+            },
+            "index": "src/przyrzady_app.blade.php",
             "browser": "src/main.ts",
             "polyfills": [
               "zone.js"
@@ -27,7 +30,10 @@
               }
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "ag-grid-community/styles/ag-grid.min.css",
+              "ag-grid-community/styles/ag-theme-balham.min.css"
+
             ],
             "scripts": []
           },
