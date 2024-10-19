@@ -1,0 +1,16 @@
+.maleLitery {
+  font-size: 0.65rem;
+  font-style: italic;
+}
+.liniaTop {
+  border-top: 1px solid black;
+}
+.liniaBottom {
+  border-bottom: 1px solid black;
+}
+.liniaLeft {
+  border-left: 1px solid black;
+}
+.liniaRight {
+  border-right: 1px solid black;
+}

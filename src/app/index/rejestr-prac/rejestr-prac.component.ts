@@ -1,7 +1,7 @@
 import {Component, inject, OnInit, ViewChild} from '@angular/core';
 import {AgGridAngular} from 'ag-grid-angular';
 import {ColDef, ColGroupDef, GridOptions} from 'ag-grid-community';
-import {Router} from '@angular/router';
+import {Router, RouterOutlet} from '@angular/router';
 import { AG_GRID_LOCALE_PL } from '@appiec/ag-grid-locale-pl';
 import {loading} from '../../services/loading';
 import {ZapytajZapiszService} from '../../services/zapytaj-zapisz.service';
@@ -10,7 +10,8 @@ import {ZapytajZapiszService} from '../../services/zapytaj-zapisz.service';
   selector: 'app-rejestr-prac',
   standalone: true,
   imports: [
-    AgGridAngular
+    AgGridAngular,
+    RouterOutlet
   ],
   templateUrl: './rejestr-prac.component.html',
   styleUrl: './rejestr-prac.component.css'
@@ -126,9 +127,9 @@ export class RejestrPracComponent implements OnInit {
     let selectionChange = (params: any) => {
       let zaznaczonyWiersz = this.grid.api.getSelectedRows();
       if (zaznaczonyWiersz.length === 1) {
-        this.router.navigate(['menu/rejestr/projekt', zaznaczonyWiersz[0].id]).then();
+        this.router.navigate(['index/rejestr-prac/przyrzad/', zaznaczonyWiersz[0].id]).then();
       } else {
-        this.router.navigate(['menu/rejestr']).then();
+        this.router.navigate(['index/rejestr-prac']).then();
       }
     }
 
