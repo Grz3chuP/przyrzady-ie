@@ -178,4 +178,11 @@ export class RejestrPracComponent implements OnInit {
 
 
   }
+
+  refresh() {
+    this.wczytajRejestrProjektowPrzyrzadow();
+  }
+  dodajNowyWpis() {
+    this.router.navigate(['index/rejestr-prac/przyrzad/0']).then();
+  }
 }

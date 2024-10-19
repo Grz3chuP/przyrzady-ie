@@ -1,47 +1,57 @@
-<div class="przyrzadWrapper p-2 bg-light">
+@if (przyrzad) {
+
+<div class="przyrzadWrapper p-2 bg-light d-flex gap-2">
   <table>
     <tr>
       <td>Oznaczenie przyrządu:</td>
-      <td> <input type="text" class="form-control"  [(ngModel)]="przyrzad.oznaczenie"></td>
+      <td> <input type="text" class="form-control"  [(ngModel)]="przyrzad!.oznaczenie"></td>
     </tr>
     <tr>
       <td>Nazwa przyrządu:</td>
-      <td><input type="text" class="form-control" [(ngModel)]="przyrzad.nazwa"></td>
+      <td><input type="text" class="form-control" [(ngModel)]="przyrzad!.nazwa"></td>
     </tr>
     <tr>
       <td>Numer przewodnika:</td>
-      <td><input type="text" class="form-control" [(ngModel)]="przyrzad.nr_przewodnika"></td>
+      <td><input type="text" class="form-control" [(ngModel)]="przyrzad!.nr_przewodnika"></td>
     </tr>
     <tr>
       <td>Termin:</td>
-      <td><input type="date" class="form-control" [(ngModel)]="przyrzad.termin_wykonania"></td>
+      <td><input type="date" class="form-control" [(ngModel)]="przyrzad!.termin_wykonania"></td>
     </tr>
     <tr>
       <td>Inne:</td>
-      <td><input type="text" class="form-control" [(ngModel)]="przyrzad.inne"></td>
+      <td><input type="text" class="form-control" [(ngModel)]="przyrzad!.inne"></td>
     </tr>
     <tr class="liniaTop liniaLeft liniaRight">
       <td colspan="2"><small class=" maleLitery">UWAGA: Ustawiony termin rozkroju i status różny od zakończonego skutkuje przypomnieniem widocznym w <a href="../../produkcja/rozkroje/panel">panelu rozkroju.</a></small></td>
     </tr>
     <tr class="liniaRight liniaLeft">
       <td>Termin rozkroju:</td>
-      <td><input type="date" class="form-control" [(ngModel)]="przyrzad.rozkroj_termin"></td>
+      <td><input type="date" class="form-control" [(ngModel)]="przyrzad!.rozkroj_termin"></td>
     </tr>
     <tr class="liniaRight liniaLeft">
       <td>Status rozkroju:</td>
-<!--      <td></td>   [(ngModel)]="przyrzad.rozkroj_status"-->
+      <td> <select class="form-control"  [(ngModel)]="przyrzad!.rozkroj_status">
+
+          <option value="null">Brak statusu</option>
+          <option value="nie rozpoczety">Rozkrój nie rozpoczęty</option>
+          <option value="rozpoczety">Rozkrój rozpoczęty</option>
+          <option value="zakonczony">Zakończony</option>
+
+
+      </select></td>
     </tr>
     <tr class="liniaRight liniaLeft liniaBottom" >
       <td>Uwaga do rozkroju:</td>
-      <td><input type="text" class="form-control" [(ngModel)]="przyrzad.nazwa"></td>
+      <td><input type="text" class="form-control" [(ngModel)]="przyrzad!.nazwa"></td>
     </tr>
     <tr>
       <td>Utworzono:</td>
-      <td>{{przyrzad.created_at}}</td>
+      <td>{{przyrzad!.created_at}}</td>
     </tr>
     <tr>
       <td>Edytowano:</td>
-      <td>{{przyrzad.updated_at}}</td>
+      <td>{{przyrzad!.updated_at}}</td>
     </tr>
     <tr>
       <td colspan="2"><button class="btn btn-primary w-100">ZAPISZ</button></td>
@@ -49,5 +59,11 @@
     </tr>
 
   </table>
+  @if (przyrzad!.id) {
+  <div class="statusyWrapper">
+    adfasdfadsdasfdsasadfasddsf
+  </div>
+  }
 </div>
 
+}
