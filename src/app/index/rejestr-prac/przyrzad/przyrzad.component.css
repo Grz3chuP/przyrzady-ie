@@ -15,11 +15,11 @@
   border-right: 1px solid black;
 }
 
-table tr td {
+.statusyWrapper table tr td {
   padding: 5px;
   border: black 1px solid;
 }
-table tr th {
+.statusyWrapper table tr th {
   padding: 5px;
   border: black 1px solid;
 }
@@ -34,4 +34,7 @@ tr:hover .przyciskUsun {
 }
 .przyrzadWrapper {
   background-color: #e3e3e3;
+}
+.czerwony {
+  color: red;
 }

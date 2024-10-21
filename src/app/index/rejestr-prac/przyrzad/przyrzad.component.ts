@@ -5,13 +5,16 @@ import {ActivatedRoute} from '@angular/router';
 import {loading} from '../../../services/loading';
 import {ZapytajZapiszService} from '../../../services/zapytaj-zapisz.service';
 import {StatusI} from '../../../interfaces/statusI';
+import {NgClass} from '@angular/common';
 declare let toastr: any;
+declare let MCP: any;
 
 @Component({
   selector: 'app-przyrzad',
   standalone: true,
   imports: [
-    FormsModule
+    FormsModule,
+    NgClass
   ],
   templateUrl: './przyrzad.component.html',
   styleUrl: './przyrzad.component.css'
@@ -20,6 +23,7 @@ export class PrzyrzadComponent {
   private activeRoute = inject(ActivatedRoute);
   private serwis = inject(ZapytajZapiszService);
 
+  MCP = MCP;
   id = 0;
   przyrzad: PrzyrzadI | undefined;
   status: StatusI | undefined;
@@ -91,6 +95,7 @@ export class PrzyrzadComponent {
       .subscribe({
         next: (d: any) => {
           this.przyrzad?.statusy.unshift(d.status);
+          this.serwis.sledzenieZmianyNajnowszegoStatusu.next(d.status);
           loading.set(false);
         },
         error: (d: any) => {
@@ -113,6 +118,22 @@ export class PrzyrzadComponent {
           this.serwis.errorhandler(d);
         }
 
+      });
+  }
+  zapiszPrzyrzad() {
+    loading.set(true);
+
+    this.serwis.zapisz('przyrzad', {przyrzad: this.przyrzad})
+      .subscribe({
+        next: (d: any) => {
+          this.przyrzad = d.obiekt;
+          this.serwis.sledzenieStatusuRozkroju.next(d.obiekt);
+          loading.set(false);
+        },
+        error: (d: any) => {
+          loading.set(false);
+          this.serwis.errorhandler(d);
+        }
       });
   }
 }

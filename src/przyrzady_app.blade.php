@@ -11,7 +11,7 @@
 
   {!! HTML::script('vendor2018/jquery/dist/jquery.min.js')!!}
   {!! HTML::script('js/vendor/toastr/toastr.min.js') !!}
-  {!! HTML::style('js/dostawcyglowni/toastr/toastr.css') !!}
+
 
   <style>
 
@@ -38,5 +38,5 @@
 <body>
 <app-root>Wczytuję aplikację ...</app-root>
 </body>
-
+{!! HTML::style('js/dostawcyglowni/toastr/toastr.css') !!}
 </html>

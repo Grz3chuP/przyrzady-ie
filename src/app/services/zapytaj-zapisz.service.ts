@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
+import {StatusI} from '../interfaces/statusI';
+import {PrzyrzadI} from '../interfaces/przyrzadI';
 declare let toastr: any;
 @Injectable({
   providedIn: 'root'
 })
 export class ZapytajZapiszService {
 
-
+  sledzenieZmianyNajnowszegoStatusu = new Subject<StatusI>();
+  sledzenieStatusuRozkroju = new Subject<PrzyrzadI>();
   constructor(private http: HttpClient) {
 
   }

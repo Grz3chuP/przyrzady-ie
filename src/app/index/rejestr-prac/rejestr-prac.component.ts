@@ -1,10 +1,13 @@
-import {Component, inject, OnInit, ViewChild} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {AgGridAngular} from 'ag-grid-angular';
 import {ColDef, ColGroupDef, GridOptions} from 'ag-grid-community';
 import {Router, RouterOutlet} from '@angular/router';
 import { AG_GRID_LOCALE_PL } from '@appiec/ag-grid-locale-pl';
 import {loading} from '../../services/loading';
 import {ZapytajZapiszService} from '../../services/zapytaj-zapisz.service';
+import {Subscription} from 'rxjs';
+import {StatusI} from '../../interfaces/statusI';
+import {PrzyrzadI} from '../../interfaces/przyrzadI';
 
 @Component({
   selector: 'app-rejestr-prac',
@@ -16,7 +19,7 @@ import {ZapytajZapiszService} from '../../services/zapytaj-zapisz.service';
   templateUrl: './rejestr-prac.component.html',
   styleUrl: './rejestr-prac.component.css'
 })
-export class RejestrPracComponent implements OnInit {
+export class RejestrPracComponent implements OnInit, OnDestroy {
   @ViewChild('agGrid') grid!: AgGridAngular;
 
   private serwis = inject(ZapytajZapiszService);
@@ -25,8 +28,36 @@ export class RejestrPracComponent implements OnInit {
   gridOptions: GridOptions | undefined;
   columnDefs: (ColDef|ColGroupDef)[] | undefined;
 
-  constructor() {
+  subskrypcjaZmianyStatusu$: Subscription | undefined;
+  subskrypcjaZmianyStatusuRozkroju$: Subscription | undefined;
 
+
+
+  constructor() {
+    this.subskrypcjaZmianyStatusu$ = this.serwis.sledzenieZmianyNajnowszegoStatusu.subscribe(
+      (status: StatusI) => {
+        //szukamy w ag-grid wiersza z id = status.przyrzady_id
+        let wiersz = this.grid.api.getRowNode(status.przyrzady_id.toString());
+        if (wiersz) {
+          let dane = wiersz.data;
+          dane.status_najnowszy = status;
+          this.grid.api.refreshCells({rowNodes: [wiersz], force: true});
+        }
+      });
+    this.subskrypcjaZmianyStatusuRozkroju$ = this.serwis.sledzenieStatusuRozkroju.subscribe(
+      (status: PrzyrzadI) => {
+        //szukamy w ag-grid wiersza z id = status.przyrzady_id
+        let wiersz = this.grid.api.getRowNode(status.id.toString());
+        if (wiersz) {
+          let dane = wiersz.data;
+          dane.rozkroj_status = status.rozkroj_status;
+          this.grid.api.refreshCells({rowNodes: [wiersz], force: true});
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.subskrypcjaZmianyStatusu$?.unsubscribe();
   }
 
   ngOnInit(): void {
@@ -95,12 +126,22 @@ export class RejestrPracComponent implements OnInit {
         field: "rozkroj_termin",
         filter: "agTextColumnFilter",
         width: 130
+
       },
       {
         headerName: "Rozkrój status",
         field: "rozkroj_status",
         filter: "agTextColumnFilter",
-        width: 130
+        width: 130,
+        cellStyle: params => {
+          if (params.value !== 'zakonczony'){
+            if (!params.value) {
+              return null; // No style if condition isn't met
+            }
+            return { color: 'red', backgroundColor: '#ffcccc' }; // Text color red, background light red
+          }
+          return null; // No style if condition isn't met
+        }
       },
       {
         headerName: "Rozkrój uwaga",
@@ -151,8 +192,12 @@ export class RejestrPracComponent implements OnInit {
       animateRows: true,
       onCellValueChanged: null,
       getRowStyle: null,
-      // getRowNodeId: item => item.lp,
+      getRowId: (item :any) => item.data.id
     } as unknown as GridOptions;
+
+
+
+
 
   }
 

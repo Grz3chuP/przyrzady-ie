@@ -24,7 +24,16 @@
       <td><input type="text" class="form-control" [(ngModel)]="przyrzad!.inne"></td>
     </tr>
     <tr class="liniaTop liniaLeft liniaRight">
-      <td colspan="2"><small class=" maleLitery">UWAGA: Ustawiony termin rozkroju i status różny od zakończonego skutkuje przypomnieniem widocznym w <a href="../../produkcja/rozkroje/panel">panelu rozkroju.</a></small></td>
+      <td colspan="2">
+        @if (!przyrzad.rozkroj_termin || przyrzad.rozkroj_status === 'zakonczony') {
+        <small class=" maleLitery">
+
+          <div >UWAGA: Ustawiony termin rozkroju i status różny od zakończonego skutkuje przypomnieniem widocznym w <a href="../../produkcja/rozkroje/panel">panelu rozkroju.</a></div></small>
+        } @else {
+          <small class=" maleLitery">
+          <div [ngClass]="{'czerwony': przyrzad.rozkroj_status !== 'zakonczony'} ">UWAGA: Ustawiony termin rozkroju i status różny od zakończonego skutkuje przypomnieniem widocznym w <a href="../../produkcja/rozkroje/panel">panelu rozkroju.</a></div></small>
+        }
+       </td>
     </tr>
     <tr class="liniaRight liniaLeft">
       <td>Termin rozkroju:</td>
@@ -55,7 +64,7 @@
       <td>{{przyrzad!.updated_at}}</td>
     </tr>
     <tr>
-      <td colspan="2"><button class="btn btn-primary w-100">ZAPISZ</button></td>
+      <td colspan="2"><button class="btn btn-primary w-100" (click)="zapiszPrzyrzad()">ZAPISZ</button></td>
 
     </tr>
 
@@ -63,7 +72,7 @@
   </div>
   @if (przyrzad!.id) {
   <div class="statusyWrapper">
-    <div></div>
+    <div class="fst-italic">Historia statusów, od najnowszego do najstarszego:</div>
     <table>
       <thead>
       <tr>
@@ -83,7 +92,7 @@
         <td><input type="text" class="form-control" [(ngModel)]="status!.status"></td>
         <td><input type="number" class="form-control" [(ngModel)]="status!.zaawansowanie"></td>
         <td><input type="text" class="form-control" [(ngModel)]="status!.uwaga"></td>
-        <td>osoba?</td>
+        <td>{{MCP.LOGIN}}</td>
         <td>-</td>
         <td><button class="btn btn-primary" (click)="zapiszNowyStatus()">Zapisz</button></td>
       </tr>
