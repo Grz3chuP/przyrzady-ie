@@ -33,7 +33,6 @@
               "src/styles.css",
               "ag-grid-community/styles/ag-grid.min.css",
               "ag-grid-community/styles/ag-theme-balham.min.css"
-
             ],
             "scripts": []
           },

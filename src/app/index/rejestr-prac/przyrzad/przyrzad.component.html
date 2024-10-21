@@ -1,6 +1,7 @@
 @if (przyrzad) {
 
-<div class="przyrzadWrapper p-2 bg-light d-flex gap-2">
+<div class="przyrzadWrapper p-2 d-flex gap-2">
+  <div>
   <table>
     <tr>
       <td>Oznaczenie przyrządu:</td>
@@ -59,9 +60,55 @@
     </tr>
 
   </table>
+  </div>
   @if (przyrzad!.id) {
   <div class="statusyWrapper">
-    adfasdfadsdasfdsasadfasddsf
+    <div></div>
+    <table>
+      <thead>
+      <tr>
+        <th>lp</th>
+        <th>Typ statusu</th>
+        <th>Status</th>
+        <th>Zaawansowanie</th>
+        <th>Uwaga</th>
+        <th>Osoba</th>
+        <th>Data utworzenia wpisu</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>-</td>
+        <td>-</td>
+        <td><input type="text" class="form-control" [(ngModel)]="status!.status"></td>
+        <td><input type="number" class="form-control" [(ngModel)]="status!.zaawansowanie"></td>
+        <td><input type="text" class="form-control" [(ngModel)]="status!.uwaga"></td>
+        <td>osoba?</td>
+        <td>-</td>
+        <td><button class="btn btn-primary" (click)="zapiszNowyStatus()">Zapisz</button></td>
+      </tr>
+        @for (status of przyrzad!.statusy; track $index) {
+          <tr>
+            <td>{{$index+1}}</td>
+            <td> @if(status.autostatus === 1) { Automatyczny } @else { Zwykły } </td>
+            <td>{{status.status}}</td>
+            <td>
+              @if (status.zaawansowanie) {
+              <div style="width: 100%;  background-color: #f3f3f3; border-radius: 4px; height: 23px; position: relative">
+              <div [style.width.%]="status.zaawansowanie" style="position: absolute; top: 0; background-color: #76c7c0; height: 23px; border-radius: 4px">
+                {{status.zaawansowanie}}%</div>
+            </div>} @else {
+                -
+              }
+            </td>
+            <td>{{status.uwaga}}</td>
+            <td>{{status.osoba.login}}</td>
+            <td>{{status.created_at}}</td>
+            <td  class="przyciskUsun"><button class="btn btn-danger w-100 shadow-sm" (click)="usunWybranyStatus(status.id)">Usuń</button></td>
+          </tr>
+        }
+      </tbody>
+    </table>
   </div>
   }
 </div>

@@ -14,3 +14,24 @@
 .liniaRight {
   border-right: 1px solid black;
 }
+
+table tr td {
+  padding: 5px;
+  border: black 1px solid;
+}
+table tr th {
+  padding: 5px;
+  border: black 1px solid;
+}
+.przyciskUsun {
+  visibility: hidden;
+  opacity: 0;
+}
+tr:hover .przyciskUsun {
+  visibility: visible;
+  opacity: 1;
+  transition: 0.5s;
+}
+.przyrzadWrapper {
+  background-color: #e3e3e3;
+}

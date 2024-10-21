@@ -17,10 +17,20 @@ export interface PrzyrzadI {
 }
 
 export interface StatusyI {
-  id: number;
-  przyrzady_id: number;
-  status: string;
-  zaawansowanie: number;
-  uwaga: string;
-  osoba_id: number;
+    autostatus: number;
+    created_at: string;
+    id: number;
+    osoba: osobaI;
+    osoba_id: number;
+    przyrzady_id: number;
+    status: string;
+    updated_at: string;
+    uwaga: string;
+    zaawansowanie: number;
+
+}
+
+export interface osobaI {
+    id: number;
+    login: string;
 }

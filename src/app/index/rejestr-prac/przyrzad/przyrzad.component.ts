@@ -4,6 +4,8 @@ import {FormsModule} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
 import {loading} from '../../../services/loading';
 import {ZapytajZapiszService} from '../../../services/zapytaj-zapisz.service';
+import {StatusI} from '../../../interfaces/statusI';
+declare let toastr: any;
 
 @Component({
   selector: 'app-przyrzad',
@@ -20,8 +22,10 @@ export class PrzyrzadComponent {
 
   id = 0;
   przyrzad: PrzyrzadI | undefined;
+  status: StatusI | undefined;
   statusyRozkroju: string[] = ['null', 'Rozkrój nie rozpoczęty', 'Rozkrój rozpoczęty', 'zakonczony']
   constructor() {
+
     this.activeRoute.paramMap.subscribe(params => {
       this.id = +params.get('id')!;
       if (this.id !== 0) {
@@ -45,6 +49,14 @@ export class PrzyrzadComponent {
           updated_at: ''
         }
       }
+      this.status = {
+        autostatus: 0,
+        id: 0,
+        przyrzady_id: 0,
+        status: '',
+        uwaga: '',
+        zaawansowanie: 0
+      }
     });
 
 
@@ -67,4 +79,40 @@ export class PrzyrzadComponent {
       });
       }
 
+  zapiszNowyStatus() {
+    loading.set(true);
+    this.status!.przyrzady_id = this.id;
+    if (!this.status!.status ) {
+      toastr.error('Status jest obowiązkowy');
+      loading.set(false);
+      return
+    }
+    this.serwis.zapisz('status', {status:  this.status})
+      .subscribe({
+        next: (d: any) => {
+          this.przyrzad?.statusy.unshift(d.status);
+          loading.set(false);
+        },
+        error: (d: any) => {
+          loading.set(false);
+          this.serwis.errorhandler(d);
+        }
+      });
+  }
+
+  usunWybranyStatus(id: number) {
+    loading.set(true);
+    this.serwis.zapisz('usuniecieStatusu', {id: id})
+      .subscribe({
+        next: (d: any) => {
+          this.przyrzad!.statusy = this.przyrzad!.statusy.filter((status: StatusyI) => status.id !== id);
+          loading.set(false);
+        },
+        error: (d: any) => {
+          loading.set(false);
+          this.serwis.errorhandler(d);
+        }
+
+      });
+  }
 }
