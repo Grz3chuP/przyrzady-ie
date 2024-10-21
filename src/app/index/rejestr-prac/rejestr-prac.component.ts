@@ -134,12 +134,15 @@ export class RejestrPracComponent implements OnInit, OnDestroy {
         filter: "agTextColumnFilter",
         width: 130,
         cellStyle: params => {
-          if (params.value !== 'zakonczony'){
-            if (!params.value) {
-              return null; // No style if condition isn't met
+          if (params.data.rozkroj_termin) {
+            if (params.value !== 'zakonczony'){
+              if (!params.value) {
+                return null; // No style if condition isn't met
+              }
+              return { color: 'red', backgroundColor: '#ffcccc' }; // Text color red, background light red
             }
-            return { color: 'red', backgroundColor: '#ffcccc' }; // Text color red, background light red
           }
+
           return null; // No style if condition isn't met
         }
       },
